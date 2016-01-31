@@ -1,0 +1,1 @@
+Create an animation in JavaScript as in the attached video. It does not have to be perfectly the same. We will evaluate your animation in terms of architectural solution, performance and readability. Nice build system will be a plus.  

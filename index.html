@@ -1,0 +1,215 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+	document.write('<script src="http://'
+			+ (location.host || 'localhost').split(':')[0]
+			+ ':35729/livereload.js?snipver=1"></' + 'script>')
+</script>
+<title>Hello Web - Processing.js Test</title>
+<script src="processing.min.js"></script>
+</head>
+<body>
+	<h1>Processing.js Test</h1>
+
+	<p>This is my first Processing.js web-based sketch:</p>
+	<canvas id="myCanvas" width="400" height="400"
+		style="border: 1px solid #000000; background: #212421;">
+</canvas>
+	<script type="text/javascript">
+		var c = document.getElementById("myCanvas");
+		var ctx = c.getContext("2d");
+
+		var obj1 = {
+			xPos : 4,
+			yPos : 100,
+			xVel : 5,
+			yVel : 4,
+			r : 3
+		}
+		var obj2 = {
+				xPos : 200,
+				yPos : 100,
+				xVel : -2,
+				yVel : 3,
+				r : 7
+			}
+		var obj3 = {
+				xPos : 250,
+				yPos : 100,
+				xVel : -2,
+				yVel : 2,
+				r : 7
+			}
+		var obj4 = {
+				xPos : 300,
+				yPos : 100,
+				xVel : -2,
+				yVel : 1,
+				r : 7
+			}
+		var obj5 = {
+				xPos : 300,
+				yPos : 120,
+				xVel : 2,
+				yVel : 4,
+				r : 7
+			}
+		var obj6 = {
+				xPos : 300,
+				yPos : 130,
+				xVel : -2,
+				yVel : 3,
+				r : 6
+			}
+		var obj7 = {
+				xPos : 300,
+				yPos : 140,
+				xVel : 2,
+				yVel : 2,
+				r : 5
+			}
+		var obj8 = {
+				xPos : 300,
+				yPos : 150,
+				xVel : -2,
+				yVel : 3,
+				r : 4
+			}
+		var obj9 = {
+				xPos : 300,
+				yPos : 160,
+				xVel : 2,
+				yVel : 4,
+				r : 3
+			}
+		var obj10 = {
+				xPos : 300,
+				yPos : 170,
+				xVel : -2,
+				yVel : 3,
+				r : 2
+			}
+		
+		
+		var obj_t=[obj1,obj2,obj3,obj4,obj5,obj6,obj7,obj8,obj9,obj10];
+		ctx.font = "30px Arial";
+		ctx.fillText("Hello World", 10, 50);
+		ctx.lineWidth = 1;
+		ctx.strokeStyle = "pink";
+		ctx.fillStyle = "black";
+		//ctx.arc(xPos, yPos, 40, 0, 2 * Math.PI);
+
+		window.setInterval(draw, 20);
+		window.setInterval(check_collision, 1);
+		window.setInterval(draw_lines,5);
+		ctx.stroke();
+
+		function draw() {
+			
+			ctx.clearRect(0, 0, 400, 400);
+			ctx.beginPath();
+			for(i in obj_t)
+				{
+					ctx.beginPath();
+					obj_t[i].xPos = obj_t[i].xPos + obj_t[i].xVel;
+					obj_t[i].yPos = obj_t[i].yPos + obj_t[i].yVel;
+					ctx.arc(obj_t[i].xPos, obj_t[i].yPos, obj_t[i].r, 0, 2 * Math.PI);
+					ctx.stroke();
+					ctx.fill();
+					ctx.closePath();
+				}
+			
+			
+			
+			
+			//ctx.fillText("Hello World", 10, 50);
+			//ctx.arc(obj1.xPos, obj1.yPos, obj1.r, 0, 2 * Math.PI);
+			
+			
+
+		}
+		
+	
+		function check_collision() {
+
+			for (i in obj_t) {
+				if (obj_t[i].xPos + obj_t[i].r >= 400) {
+					obj_t[i].xVel = -Math.abs(obj_t[i].xVel);
+				} else if (obj_t[i].xPos - obj_t[i].r <= 0) {
+					obj_t[i].xVel = Math.abs(obj_t[i].xVel);
+				}
+
+				if (obj_t[i].yPos + obj_t[i].r >= 400) {
+					obj_t[i].yVel = -Math.abs(obj_t[i].yVel);
+				} else if (obj_t[i].yPos - obj_t[i].r <= 0) {
+					obj_t[i].yVel = Math.abs(obj_t[i].yVel);
+				}
+			}
+			
+
+		for (var i = 0; i < (obj_t.length - 1); i++) {
+				for (var j = i+1; j < (obj_t.length); j++) {
+					//console.log(distance(obj_t[i].xPos, obj_t[i].yPos, obj_t[i+1].xPos, obj_t[i+1].yPos));
+					if (distance(obj_t[i].xPos, obj_t[i].yPos,
+							obj_t[j].xPos, obj_t[j].yPos) <= obj_t[i].r
+							+ obj_t[j].r) {
+						//console.log(distance(obj_t[i].xPos, obj_t[i].yPos, obj_t[i+1].xPos, obj_t[i+1].yPos));
+						var temp1_xVel = obj_t[i].xVel;
+						var temp1_yVel = obj_t[i].yVel
+						var temp1_xPos = obj_t[i].xPos;
+						var temp1_yPos = obj_t[i].yPos;
+						var temp2_xVel = obj_t[j].xVel;
+						var temp2_yVel = obj_t[j].yVel;
+						var temp2_xPos = obj_t[j].xPos;
+						var temp2_yPos = obj_t[j].yPos;
+						console.log(obj_t[i].xPos);
+						console.log(obj_t[j].xPos);
+						obj_t[i].xPos = obj_t[i].xPos - temp1_xVel;
+						obj_t[i].yPos = obj_t[i].yPos - temp1_yVel;
+						obj_t[j].xPos = obj_t[j].xPos - temp2_xVel;
+						obj_t[j].yPos = obj_t[j].yPos - temp2_yVel;
+						console.log(obj_t[i].xVel = (temp1_xVel
+								* (obj_t[i].r - obj_t[j].r) + 2
+								* obj_t[j].r * temp2_xVel)
+								/ (obj_t[i].r + obj_t[j].r));
+						console.log(obj_t[i].yVel = (temp1_yVel
+								* (obj_t[i].r - obj_t[j].r) + 2
+								* obj_t[j].r * temp2_yVel)
+								/ (obj_t[i].r + obj_t[j].r));
+						console.log(obj_t[j].xVel = (temp2_xVel
+								* (obj_t[j].r - obj_t[i].r) + 2
+								* obj_t[i].r * temp1_xVel)
+								/ (obj_t[i].r + obj_t[j].r));
+						console.log(obj_t[j].yVel = (temp2_yVel
+								* (obj_t[j].r - obj_t[i].r) + 2
+								* obj_t[i].r * temp1_yVel)
+								/ (obj_t[i].r + obj_t[j].r));
+					}
+				}
+			}
+
+		}
+		
+		function draw_lines()
+		{
+			for (var i = 0; i < (obj_t.length - 1); i++) {
+				for (var j = i+1; j < (obj_t.length); j++) {
+					if(distance(obj_t[i].xPos, obj_t[i].yPos,
+							obj_t[j].xPos, obj_t[j].yPos) <= 100)
+						{
+							ctx.beginPatch();
+						}
+					
+				}
+			}
+		}
+
+		function distance(x1, y1, x2, y2) {
+			var d = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+			return d;
+		}
+	</script>
+</body>
+</html>
