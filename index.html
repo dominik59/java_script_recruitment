@@ -102,8 +102,8 @@
 		//ctx.arc(xPos, yPos, 40, 0, 2 * Math.PI);
 
 		window.setInterval(draw, 20);
-		window.setInterval(check_collision, 1);
-		window.setInterval(draw_lines,5);
+		window.setInterval(check_collision, 10);
+		window.setInterval(draw_lines,10);
 		ctx.stroke();
 
 		function draw() {
@@ -199,7 +199,11 @@
 					if(distance(obj_t[i].xPos, obj_t[i].yPos,
 							obj_t[j].xPos, obj_t[j].yPos) <= 100)
 						{
-							ctx.beginPatch();
+							ctx.beginPath();
+							ctx.moveTo(obj_t[i].xPos,obj_t[i].yPos);
+							ctx.lineTo(obj_t[j].xPos,obj_t[j].yPos);
+							ctx.stroke();
+							ctx.closePath();
 						}
 					
 				}
