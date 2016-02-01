@@ -7,6 +7,7 @@
 
 </head>
 <body>
+
 	<h1>Strona prezentująca realizację zadania rekrutacyjnego</h1>
 	<div>
 		Number of balls:<br> (Value between 1 and 20):<br> <input
@@ -14,20 +15,23 @@
 		<button id="submit">OK</button>
 	</div>
 
-
-
 	<canvas id="myCanvas" width="400" height="400"
 		style="border: 1px solid #000000; background: #212421;">
-</canvas>
+	</canvas>
 	<script type="text/javascript">
+		/** @type {Array} it is used to store all objects which represents balls */
 		obj_t = [];
 		c = document.getElementById("myCanvas");
 		ctx = c.getContext("2d");
 		window.setInterval(draw, 30);
-		window.setInterval(draw_lines, 5);
+		// window.setInterval(draw_lines, 5);
 		window.setInterval(check_collision, 10);
 		var button=document.getElementById("submit");
 		button.addEventListener("click",main);
+
+		/**
+		 * this is main function of all script, it is used to dynamically create object, put them in obj_t table and set all important properties		
+		 */
 		function main() {
 			
 			var nr_of_ball=document.getElementById("num_of_balls").value;
@@ -61,9 +65,31 @@
 		}
 		
 
+		/**
+		 * draw function is responsible for painting and animating all objects on canvas
+		 */
 		function draw() {
 
 			ctx.clearRect(0, 0, c.width, c.height);
+			for (var i = 0; i < (obj_t.length - 1); i++) {
+				for (var j = i + 1; j < (obj_t.length); j++) {
+					if (distance(obj_t[i].xPos, obj_t[i].yPos, obj_t[j].xPos,
+							obj_t[j].yPos) <= 100) {
+						ctx.save();
+						ctx.globalAlpha = Math
+								.abs((distance(obj_t[i].xPos, obj_t[i].yPos,
+										obj_t[j].xPos, obj_t[j].yPos)) - 100) / 100;
+						ctx.beginPath();
+						ctx.moveTo(obj_t[i].xPos, obj_t[i].yPos);
+						ctx.lineTo(obj_t[j].xPos, obj_t[j].yPos);
+						ctx.closePath();
+						ctx.stroke();
+						ctx.restore();
+					}
+
+				}
+
+			}
 			ctx.beginPath();
 			for (i in obj_t) {
 				ctx.beginPath();
@@ -80,7 +106,9 @@
 			//ctx.arc(obj1.xPos, obj1.yPos, obj1.r, 0, 2 * Math.PI);
 
 		}
-
+		/**
+		 * check_collision function is responsible for checking whether objects are touching somethig else or not
+		 */
 		function check_collision() {
 
 			for (i in obj_t) {
@@ -138,30 +166,14 @@
 			}
 
 		}
-
-		function draw_lines() {
-			//ctx.clearRect(0, 0, c.width, c.height);
-			for (var i = 0; i < (obj_t.length - 1); i++) {
-				for (var j = i + 1; j < (obj_t.length); j++) {
-					if (distance(obj_t[i].xPos, obj_t[i].yPos, obj_t[j].xPos,
-							obj_t[j].yPos) <= 100) {
-						ctx.save();
-						ctx.globalAlpha = Math
-								.abs((distance(obj_t[i].xPos, obj_t[i].yPos,
-										obj_t[j].xPos, obj_t[j].yPos)) - 100) / 100;
-						ctx.beginPath();
-						ctx.moveTo(obj_t[i].xPos, obj_t[i].yPos);
-						ctx.lineTo(obj_t[j].xPos, obj_t[j].yPos);
-						ctx.closePath();
-						ctx.stroke();
-						ctx.restore();
-					}
-
-				}
-
-			}
-		}
-
+		/**
+		 * distance function is used for measuring distance between two objects
+		 * @param  {[Integer]} x1 it represents the x-coordinate of first object
+		 * @param  {[Integer]} y1 it represents the y-coordinate of first object
+		 * @param  {[Integer]} x2 it represents the x-coordinate of second object
+		 * @param  {[Integer]} y2 it represents the y-coordinate of second object
+		 * @return {[Integer]}    it represents distance between these two objects
+		 */
 		function distance(x1, y1, x2, y2) {
 			var d = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
 			return d;
