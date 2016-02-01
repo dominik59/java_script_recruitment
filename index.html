@@ -2,136 +2,85 @@
 <!DOCTYPE html>
 <html>
 <head>
-<script>
-	document.write('<script src="http://'
-			+ (location.host || 'localhost').split(':')[0]
-			+ ':35729/livereload.js?snipver=1"></' + 'script>')
-</script>
-<title>Hello Web - Processing.js Test</title>
-<script src="processing.min.js"></script>
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" >
+
+
 </head>
 <body>
-	<h1>Processing.js Test</h1>
+	<h1>Strona prezentująca realizację zadania rekrutacyjnego</h1>
+	<div>
+		Number of balls:<br> (Value between 1 and 20):<br> <input
+			type="number" id="num_of_balls" min="1" max="20" value="10">
+		<button id="submit">OK</button>
+	</div>
 
-	<p>This is my first Processing.js web-based sketch:</p>
+
+
 	<canvas id="myCanvas" width="400" height="400"
 		style="border: 1px solid #000000; background: #212421;">
 </canvas>
 	<script type="text/javascript">
-		var c = document.getElementById("myCanvas");
-		var ctx = c.getContext("2d");
-
-		var obj1 = {
-			xPos : 4,
-			yPos : 100,
-			xVel : 5,
-			yVel : 4,
-			r : 3
-		}
-		var obj2 = {
-				xPos : 200,
-				yPos : 100,
-				xVel : -2,
-				yVel : 3,
-				r : 7
-			}
-		var obj3 = {
-				xPos : 250,
-				yPos : 100,
-				xVel : -2,
-				yVel : 2,
-				r : 7
-			}
-		var obj4 = {
-				xPos : 300,
-				yPos : 100,
-				xVel : -2,
-				yVel : 1,
-				r : 7
-			}
-		var obj5 = {
-				xPos : 300,
-				yPos : 120,
-				xVel : 2,
-				yVel : 4,
-				r : 7
-			}
-		var obj6 = {
-				xPos : 300,
-				yPos : 130,
-				xVel : -2,
-				yVel : 3,
-				r : 6
-			}
-		var obj7 = {
-				xPos : 300,
-				yPos : 140,
-				xVel : 2,
-				yVel : 2,
-				r : 5
-			}
-		var obj8 = {
-				xPos : 300,
-				yPos : 150,
-				xVel : -2,
-				yVel : 3,
-				r : 4
-			}
-		var obj9 = {
-				xPos : 300,
-				yPos : 160,
-				xVel : 2,
-				yVel : 4,
-				r : 3
-			}
-		var obj10 = {
-				xPos : 300,
-				yPos : 170,
-				xVel : -2,
-				yVel : 3,
-				r : 2
-			}
-		
-		
-		var obj_t=[obj1,obj2,obj3,obj4,obj5,obj6,obj7,obj8,obj9,obj10];
-		ctx.font = "30px Arial";
-		ctx.fillText("Hello World", 10, 50);
-		ctx.lineWidth = 1;
-		ctx.strokeStyle = "pink";
-		ctx.fillStyle = "black";
-		//ctx.arc(xPos, yPos, 40, 0, 2 * Math.PI);
-
-		window.setInterval(draw, 20);
+		obj_t = [];
+		c = document.getElementById("myCanvas");
+		ctx = c.getContext("2d");
+		window.setInterval(draw, 30);
+		window.setInterval(draw_lines, 5);
 		window.setInterval(check_collision, 10);
-		window.setInterval(draw_lines,10);
-		ctx.stroke();
+		var button=document.getElementById("submit");
+		button.addEventListener("click",main);
+		function main() {
+			
+			var nr_of_ball=document.getElementById("num_of_balls").value;
+			
+			if(nr_of_ball<0 || nr_of_ball>20) return;
+			
+			obj_t=[];
+			console.log(document.getElementById('num_of_balls').value);
+			for (var i = 0; i < document.getElementById('num_of_balls').value; i++) {
+				var obj = {
+					xPos : 10 + 10 * i,
+					yPos : 10 + 11 * i,
+					xVel : 0 + i / 10,
+					yVel : 1 + i / 10,
+					r : 2 + i / 5
+				}
+				obj_t.push(obj);
+			}
+			console.log(obj_t);
+
+			//var obj_t=[obj1,obj2,obj3,obj4,obj5,obj6,obj7,obj8,obj9,obj10];
+			ctx.font = "30px Arial";
+			ctx.fillText("Hello World", 10, 50);
+			ctx.lineWidth = 2;
+			ctx.strokeStyle = "purple";
+			ctx.fillStyle = "black";
+			//ctx.arc(xPos, yPos, 40, 0, 2 * Math.PI);
+
+			
+			//ctx.stroke();
+		}
+		
 
 		function draw() {
-			
-			ctx.clearRect(0, 0, 400, 400);
+
+			ctx.clearRect(0, 0, c.width, c.height);
 			ctx.beginPath();
-			for(i in obj_t)
-				{
-					ctx.beginPath();
-					obj_t[i].xPos = obj_t[i].xPos + obj_t[i].xVel;
-					obj_t[i].yPos = obj_t[i].yPos + obj_t[i].yVel;
-					ctx.arc(obj_t[i].xPos, obj_t[i].yPos, obj_t[i].r, 0, 2 * Math.PI);
-					ctx.stroke();
-					ctx.fill();
-					ctx.closePath();
-				}
-			
-			
-			
-			
+			for (i in obj_t) {
+				ctx.beginPath();
+				obj_t[i].xPos = obj_t[i].xPos + obj_t[i].xVel;
+				obj_t[i].yPos = obj_t[i].yPos + obj_t[i].yVel;
+				ctx.arc(obj_t[i].xPos, obj_t[i].yPos, obj_t[i].r, 0,
+						2 * Math.PI);
+				ctx.stroke();
+				ctx.fill();
+				ctx.closePath();
+			}
+
 			//ctx.fillText("Hello World", 10, 50);
 			//ctx.arc(obj1.xPos, obj1.yPos, obj1.r, 0, 2 * Math.PI);
-			
-			
 
 		}
-		
-	
+
 		function check_collision() {
 
 			for (i in obj_t) {
@@ -147,14 +96,12 @@
 					obj_t[i].yVel = Math.abs(obj_t[i].yVel);
 				}
 			}
-			
 
-		for (var i = 0; i < (obj_t.length - 1); i++) {
-				for (var j = i+1; j < (obj_t.length); j++) {
+			for (var i = 0; i < (obj_t.length - 1); i++) {
+				for (var j = i + 1; j < (obj_t.length); j++) {
 					//console.log(distance(obj_t[i].xPos, obj_t[i].yPos, obj_t[i+1].xPos, obj_t[i+1].yPos));
-					if (distance(obj_t[i].xPos, obj_t[i].yPos,
-							obj_t[j].xPos, obj_t[j].yPos) <= obj_t[i].r
-							+ obj_t[j].r) {
+					if (distance(obj_t[i].xPos, obj_t[i].yPos, obj_t[j].xPos,
+							obj_t[j].yPos) <= obj_t[i].r + obj_t[j].r) {
 						//console.log(distance(obj_t[i].xPos, obj_t[i].yPos, obj_t[i+1].xPos, obj_t[i+1].yPos));
 						var temp1_xVel = obj_t[i].xVel;
 						var temp1_yVel = obj_t[i].yVel
@@ -171,42 +118,47 @@
 						obj_t[j].xPos = obj_t[j].xPos - temp2_xVel;
 						obj_t[j].yPos = obj_t[j].yPos - temp2_yVel;
 						console.log(obj_t[i].xVel = (temp1_xVel
-								* (obj_t[i].r - obj_t[j].r) + 2
-								* obj_t[j].r * temp2_xVel)
+								* (obj_t[i].r - obj_t[j].r) + 2 * obj_t[j].r
+								* temp2_xVel)
 								/ (obj_t[i].r + obj_t[j].r));
 						console.log(obj_t[i].yVel = (temp1_yVel
-								* (obj_t[i].r - obj_t[j].r) + 2
-								* obj_t[j].r * temp2_yVel)
+								* (obj_t[i].r - obj_t[j].r) + 2 * obj_t[j].r
+								* temp2_yVel)
 								/ (obj_t[i].r + obj_t[j].r));
 						console.log(obj_t[j].xVel = (temp2_xVel
-								* (obj_t[j].r - obj_t[i].r) + 2
-								* obj_t[i].r * temp1_xVel)
+								* (obj_t[j].r - obj_t[i].r) + 2 * obj_t[i].r
+								* temp1_xVel)
 								/ (obj_t[i].r + obj_t[j].r));
 						console.log(obj_t[j].yVel = (temp2_yVel
-								* (obj_t[j].r - obj_t[i].r) + 2
-								* obj_t[i].r * temp1_yVel)
+								* (obj_t[j].r - obj_t[i].r) + 2 * obj_t[i].r
+								* temp1_yVel)
 								/ (obj_t[i].r + obj_t[j].r));
 					}
 				}
 			}
 
 		}
-		
-		function draw_lines()
-		{
+
+		function draw_lines() {
+			//ctx.clearRect(0, 0, c.width, c.height);
 			for (var i = 0; i < (obj_t.length - 1); i++) {
-				for (var j = i+1; j < (obj_t.length); j++) {
-					if(distance(obj_t[i].xPos, obj_t[i].yPos,
-							obj_t[j].xPos, obj_t[j].yPos) <= 100)
-						{
-							ctx.beginPath();
-							ctx.moveTo(obj_t[i].xPos,obj_t[i].yPos);
-							ctx.lineTo(obj_t[j].xPos,obj_t[j].yPos);
-							ctx.stroke();
-							ctx.closePath();
-						}
-					
+				for (var j = i + 1; j < (obj_t.length); j++) {
+					if (distance(obj_t[i].xPos, obj_t[i].yPos, obj_t[j].xPos,
+							obj_t[j].yPos) <= 100) {
+						ctx.save();
+						ctx.globalAlpha = Math
+								.abs((distance(obj_t[i].xPos, obj_t[i].yPos,
+										obj_t[j].xPos, obj_t[j].yPos)) - 100) / 100;
+						ctx.beginPath();
+						ctx.moveTo(obj_t[i].xPos, obj_t[i].yPos);
+						ctx.lineTo(obj_t[j].xPos, obj_t[j].yPos);
+						ctx.closePath();
+						ctx.stroke();
+						ctx.restore();
+					}
+
 				}
+
 			}
 		}
 
